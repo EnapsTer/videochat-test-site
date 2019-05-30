@@ -1,0 +1,1 @@
+web: gunicorn talkhub.wsgi --log-file -

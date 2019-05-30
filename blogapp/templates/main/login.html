@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    {% include "main/base.html" %}
+</head>
+<body>
+<form method="POST" class="middle-block mx-auto bg-lightSteel text-white text-center">
+    <h4>Login</h4>
+
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <input type="submit" value="Login" class="btn btn-success mx-auto my-2 w-100">
+
+    {% if error %}
+    <div class="alert alert-danger my-2" role="alert">
+        {{ error }}
+    </div>
+	{% endif %}
+
+    <a href="{% url 'register' %}" class="text-white">Don't have an account?</a><br>
+    <strong><a href="{% url 'password_reset' %}" class="text-white">Forgotten your password?</a></strong>
+
+    <div class="w-100 my-2"><hr></div>
+
+    <button type="button" class="btn btn-secondary w-20">
+        <a href="{% url 'social:begin' 'github' %}" class="text-white"><span class="mif-github icon"></span></a>
+    </button>
+
+    <button type="button" class="btn btn-primary w-20">
+        <a href="{% url 'social:begin' 'google-oauth2' %}" class="text-white"><span class="mif-google-plus icon"></span></a>
+    </button>
+
+{#    <a href="{% url 'social:begin' 'linkedin-oauth2' %}">#}
+{#        <button type="button" name="button" class="btn btn-primary">Linkedin</button>#}
+{#    </a>#}
+
+    <button type="button" class="btn btn-info w-20">
+        <a href="{% url 'social:begin' 'facebook' %}" class="text-white"><span class="mif-facebook icon"></span></a>
+    </button>
+
+    <button type="button" class="btn btn-light w-20">
+        <a href="{% url 'social:begin' 'vk-oauth2' %}"><span class="mif-vk icon"></span></a>
+    </button>
+
+    <br>
+
+    <div class="btn-group my-1" role="group" aria-label="Yandex_auth">
+        <button type="button" class="btn btn-warning">
+            <a href="{% url 'social:begin' 'yandex-oauth2' %}"><span class="mif-keyboard icon"></span></a>
+        </button>
+        <button type="button" class="btn btn-warning">
+            <a href="{% url 'social:begin' 'yandex-oauth2' %}">
+                Яндекс
+            </a>
+        </button>
+    </div>
+
+</form>
+</body>
+</html>

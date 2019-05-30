@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TalkHub</title>
+
+    {% include "main/base.html" %}
+</head>
+<body class="d-flex flex-column">
+    {% if query %}
+        <div class="alert alert-success" role="alert">
+            <p>You are searching for: {{ query }}</p><a class="btn-cancel" href="{% url 'main_page' %}"></a>
+        </div>
+    {% endif %}
+
+    {% if searchtag %}
+        <div class="alert alert-success" role="alert">
+            <p>You are searching for: {{ searchtag }}</p><a class="btn-cancel" href="{% url 'main_page' %}"></a>
+        </div>
+    {% endif %}
+    <div class="row justify-content-center mx-0">
+        <div class="col-lg-3 col-12 col-md-5 col-sm-4 bg-light border rounded mb-3">
+            {% include 'main/top-users.html' %}
+        </div>
+        <div class="col-lg-4 col-12 col-md-7 col-sm-4">
+            {% for post in posts %}
+            {% if not post.is_private or request.user.is_superuser %}
+            <div class="card bg-light mb-3 text-center rounded">
+                <div class="card-header">Author: <a href="{% url 'profile' id=post.author.id %}" class="links text-dark">{{ post.author }}</a></div>
+                <div class="card-body">
+                    {% if post.is_private %}
+                        <span class="badge badge-danger">Private</span>
+                    {% endif %}
+                    <h4 class="card-title overflow-hidden">{{ post.title }}</h4>
+                    <h5 class="card-text overflow-hidden">{{ post.body | safe }}</h5>
+                    <p class="card-text">
+                        {% for tag in post.tag.all %}
+                        <form action="{% url "main_page" %}" style="display: inline-block;"><button type="submit" value="{{ tag }}" name="searchtag" class="btn badge badge-success">{{ tag }}</button></form>
+                        {% endfor %}
+                    </p>
+                    <p class="card-text">
+                        <small>{{ post.likes.count }} Likes / {{ post.total_comments }} Comments</small>
+                    </p>
+                    <p class="lead">
+                        <a class="btn btn-primary btn-lg" href="{{post.get_absolute_url}}" role="button">Learn more</a>
+                    </p>
+                </div>
+            </div>
+                {% endif %}
+            {% empty %}
+                <div class="alert alert-danger" role="alert">
+                    <strong>Sorry!</strong> No post found
+                </div>
+            {% endfor %}
+        </div>
+        <div class="col-lg-2 col-sm-4 col-md-12 col-12 bg-light mb-3 border rounded tag-section">
+            {% include 'main/tag_section.html' %}
+        </div>
+    </div>
+</body>
+</html>

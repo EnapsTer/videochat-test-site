@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Recommendation</title>
+    {% include "main/base.html" %}
+</head>
+<body>
+<div class="middle-block bg-light">
+<h3>Maybe this links could help you to solve your problem:</h3>
+{% for link in links %}
+    <a href="{{ link }}" class="badge badge-info">{{ link }}</a><br>
+{% empty %}
+    Sorry, no links found.
+{% endfor %}
+<br>
+{% if private_link %}
+<h3>Here your private post link:</h3>
+<a href="{{ private_link }}" class="badge badge-primary">https://talkhub.herokuapp.com{{ private_link }}</a><br>
+{% endif %}
+<br>
+<a href="{% url 'main_page' %}"><button class="btn btn-secondary">Continue in TalkHub</button></a>
+</div>
+</body>
+</html>

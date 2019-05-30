@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit</title>
+    {% include "main/base.html" %}
+</head>
+<body id="body">
+<form action="." method="POST" enctype="multipart/form-data" class="middle-block mx-auto bg-lightSteel text-white text-center">
+    <h4 class="mb-2">Edit profile</h4>
+
+    {% csrf_token %}
+    {{ form.as_p }}
+    {% if request.user.profile %}
+        {{ profile.as_p }}
+    {% endif %}
+    <p><strong><a href="{% url 'password_reset' %}" class="text-white">Reset password</a></strong></p>
+    <input type="submit" value="Complete" class="btn btn-success w-100">
+</form>
+</body>
+</html>

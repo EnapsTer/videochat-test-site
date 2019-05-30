@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+    {% include "main/base.html" %}
+</head>
+<body>
+    <div class="row justify-content-center mr-0 px-4">
+        <div class="col-lg-2 col-12 bg-light border rounded">
+            {% if user.profile.image %} 
+                <img src="{{ user.profile.image.url }}" alt="User Image" class="profile-image w-100 h-100"> 
+            {% else %} 
+                <img src="https://cdn1.savepice.ru/uploads/2019/5/19/058cdfe21f8e4fd2ce85ce629b57916d-full.jpg" alt="No Photo" class="profile-image w-100 h-100"> 
+            {% endif %} 
+        </div>
+        <div class="col-lg-4 col-12 bg-light border rounded">
+            <div class="d-flex flex-column my-2">
+                <div class="input-group mb-3"> 
+                    <div class="input-group-prepend"> 
+                    <span class="input-group-text" id="basic-addon1">@</span> 
+                    </div> 
+                    <input type="text" class="form-control" placeholder={{user.username}} readonly aria-label="Имя пользователя" aria-describedby="basic-addon1"> 
+                </div>
+                <div>Email: {{user.email}}</div>
+                <div>County: {{user.profile.country}}</div>
+                <div>Contacts: {{user.profile.contacts}}</div>
+            </div>
+        </div>
+        <div class="col-lg-2 col-12 bg-light border rounded">
+            <div class="d-flex flex-column my-2">
+                <form action="{% url 'main_page' %}" class="mb-2">
+                    <input hidden value="{{ user.id }}" name="searchuser">
+                    <button type="submit" class="btn btn-secondary w-100">{{ user.username }}'s posts</button>
+                </form>
+                {% if request.user == user %}
+                    <a href="{% url 'user_delete' id=user.id %}" id="delete-user" class="mb-2">
+                        <button type="button" class="btn btn-danger w-100">Delete account</button>
+                    </a>
+                    <a class="mb-2" href="{% url 'edit_profile' %}">
+                        <button type="button" class="btn btn-success w-100">Edit profile</button>
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<div class="w-100">
+    {% if comments.count != 0 %}
+    <div class="comments bg-light" style="color: black!important;"> 
+        {% for comment in comments %} 
+            <div class="message right"> 
+                <div class="message-sender">{{ comment.user|capfirst }}</div> 
+                    <div class="message-time"> 
+                        {{ comment.timestap }} 
+                        {% if request.user == comment.user or request.user.is_staff %} 
+                        <span class="mif-bin square mini btn btn-danger ml-1" id="comment-delete" name="{% url 'comment_delete' id=post.id comid=comment.id %}"></span>
+                        {% endif %} 
+                    </div> 
+                    <div class="message-item">
+                        {% if comment.user.profile.image %}
+                            <img class="message-avatar" src="{{ comment.user.profile.image.url }}">
+                        {% else %}
+                            <img class="message-avatar" src="https://cdn1.savepice.ru/uploads/2019/5/19/058cdfe21f8e4fd2ce85ce629b57916d-full.jpg">
+                        {% endif %}
+                        <div class="message-text default">{{ comment.content | safe}}</div>
+                    </div> 
+                </div> 
+        {% endfor %} 
+    </div>
+    {% else %}
+    <div class="comments bg-light" style="color: black!important;">
+        <div class="message right">
+            <div class="message-sender">System</div>
+            <div class="message-time">
+                {{ post.created }}
+            </div>
+            <div class="message-item">
+                <img class="message-avatar" src="https://cdn1.savepice.ru/uploads/2019/5/19/058cdfe21f8e4fd2ce85ce629b57916d-full.jpg">
+                <div class="message-text default">No comments yet!
+                    Leave the first one by typing it and pressing 'Send'.</div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>

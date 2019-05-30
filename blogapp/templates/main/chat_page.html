@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{post.title}} | {{post.author}}</title>
+    {% include "main/base.html" %}
+</head>
+
+<body>
+    <div class="containter bg-light mx-xl-2">
+        <div class="row mr-0 mx-xl-3 py-xl-2">
+            <div class="col-xl-8 col-lg-7 min-vh-35">
+                <p>Author: <a href="{% url 'profile' id=post.author.id %}" class="links">{{ post.author }}</a></p>
+                <p><small>{{ post.created }}</small></p>
+                <div><h1 class="display-5"><a href="{{post.get_absolute_url}}" class="links text-dark">{{ post.title }}</a></h1></div>
+
+                <div id="like-section" class="d-flex">
+                {% include 'main/like_section.html' %}
+                </div>
+
+
+                <div>
+                    {% if request.user == post.author %}
+                    <a href="{% url 'blogapp:post_edit' id=post.id %}">
+                        <button type="button" class="btn btn-outline-success">Edit</button>
+                    </a>
+                    <a href="{% url 'blogapp:post_delete' id=post.id %}" id="delete">
+                        <button type="button" class="btn btn-danger">Delete</button>
+                    </a>
+                    {% endif %}
+                    <button type="button" id="links-btn" class="btn btn-primary">Helpful links</button>
+
+                </div>
+
+            </div>
+            <div class="col-xl-4 col-lg-5 sticky-top">
+            {% if request.user.is_authenticated %}
+                <iframe src="https://tokbox.com/embed/embed/ot-embed.js?embedId=854a2eb9-6c55-434c-93b4-b51b66541b71&room={{ post.id }}&iframe=true"
+                    class="w-100 h-100" scrolling="no" allow="microphone; camera"></iframe>
+            {% else %}
+                <div class="w-100 h-100">
+                    <div class="alert alert-danger" role="alert">
+                        <h4 class="alert-heading">Access denied!</h4>
+                        <p>Sorry, but for Video chat you need to Sing In or Sign Up.</p>
+                        <hr>
+                        <p class="mb-0"><a href="{% url 'user_login' %}" class="alert-link">Sign In</a> or <a href="{% url 'register' %}" class="alert-link">Sign Up</a></p>
+                    </div>
+                </div>
+            {% endif %}
+            </div>
+            <div class="w-100"></div>
+            <div class="col-xl-7">
+                <div id="recommended-links" style="display: none;">
+                        {% for link in links %}
+                            <a href="{{ link }}" class="badge badge-info">{{ link }}</a><br>
+                        {% empty %}
+                            Sorry, no links found<br>
+                        {% endfor %}
+                </div>
+            </div>
+            <div class="w-100"><hr></div>
+            <div class="col-xl-7 min-vh-35">
+                {{ post.body | safe }}
+            </div>
+            <div class="w-100"><hr></div>
+
+            <div class="col-xl-8 col-lg-7 pl-lg-0 main-comment-section">
+                {% include 'main/comment_section.html' %}
+            </div>
+
+            <div class="message-input col-xl-8 col-lg-7 pl-lg-0">
+                <form method="POST" class="comment-form" action="{% url 'blogapp:chat_page' id=post.id key=post.private_key %}">
+                    <div class="input comments-input-form d-flex flex-column">
+                        {% csrf_token %}
+                        {{ comment_form.content | safe }}
+                        <input class="btn input-custom-button js-chat-send-button btn-secondary w-100 border-radius-0" tabindex="-1" type="submit" value="Send">
+                    </div>
+                </form>
+            </div>
+            <div class="w-100"></div>
+        </div>
+    </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+    function refresh(){
+            $.ajax({
+                type: 'GET',
+                url: document.URL,
+                data: {
+                },
+                dataType: 'json',
+                success: function (response) {
+                    $('.main-comment-section').html(response['form']);
+                },
+                error: function (rs) {
+                    console.log(rs.responseText)
+                },
+            });
+        }
+
+        setInterval(refresh, 15000);
+    }, false);
+
+</script>
+
+</body>
+</html>

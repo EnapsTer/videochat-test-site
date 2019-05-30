@@ -1,0 +1,8 @@
+<div class="d-flex flex-column">
+    {% for tag in tags %}
+    <div class="tag-category d-flex my-1 align-items-center">
+            <input type="checkbox" name="tags" value="{{tag.id}}">
+            <button type="button" class="btn btn-info w-100 ml-1">{{ tag }}</button>
+    </div>
+    {% endfor %}
+</div>

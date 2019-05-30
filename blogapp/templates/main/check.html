@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Check</title>
+    {% include "main/base.html" %}
+</head>
+<body id="body">
+<form action="." method="POST" enctype="multipart/form-data" style="margin: 10px">
+    It looks like you haven't update all necessary data:
+    {% csrf_token %}
+    {{ form.as_p }}<br>
+    You could also update additional data:
+    {{ profile.as_p }}
+    <input type="submit" value="Complete" class="btn btn-outline-success">
+</form>
+</body>
+</html>

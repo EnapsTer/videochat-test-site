@@ -1,0 +1,18 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Username</th>
+      <th scope="col">Rating</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for user in users %}
+    <tr>
+      <th scope="row" class="table-main">{{ forloop.counter }}</th>
+      <td><a href="{% url 'profile' id=user.id %}">{{ user.username }}</a></td>
+      <td>{{ user.total_likes}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
