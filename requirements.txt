@@ -4,7 +4,7 @@ django-jquery==3.1.0
 django-pygments==0.1
 gunicorn==19.9.0
 MarkupSafe==1.1.0
-Pillow==5.4.1
+Pillow==8.1.1
 psycopg2==2.7.7
 Pygments==2.3.1
 pytz==2018.9
